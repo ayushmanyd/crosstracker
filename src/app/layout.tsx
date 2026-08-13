@@ -16,8 +16,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CrossTracker",
-  description: "CrossTracker",
+  title: {
+    default: "CrossTracker",
+    template: "%s | CrossTracker",
+  },
+  description:
+    "Plan monthly spending targets, log actuals, and see the variance.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -29,7 +33,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         "antialiased",
         geistSans.variable,
         geistMono.variable,
-        "font-sans",
         inter.variable,
       )}
     >

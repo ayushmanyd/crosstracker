@@ -6,13 +6,13 @@ import { cookies } from "next/headers";
 import { env } from "@/lib/env";
 
 import {
+  SESSION_COOKIE,
   SESSION_DURATION_MS,
   signSessionToken,
   verifySessionToken,
   type SessionPayload,
 } from "./jwt";
 
-export const SESSION_COOKIE = "session";
 
 export async function createSession(userId: string): Promise<void> {
   const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
