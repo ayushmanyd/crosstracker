@@ -1,7 +1,8 @@
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <div className="">
-    </div>
-  );
+import { getSession } from "@/server/auth/session";
+
+export default async function Home() {
+  const session = await getSession();
+  redirect(session ? "/report" : "/login");
 }
