@@ -24,10 +24,16 @@ const nameSchema = z
 
 function isUniqueViolation(error: unknown): boolean {
   if (typeof error !== "object" || error === null) return false;
-  if ((error as any).code === "23505") return true;
-  if ((error as any).cause?.code === "23505") return true;
-  return false;
+  const candidate = error as { code?: unknown; cause?: unknown };
+  if (candidate.code === "23505") return true;
+  const cause = candidate.cause;
+  return (
+    typeof cause === "object" &&
+    cause !== null &&
+    (cause as { code?: unknown }).code === "23505"
+  );
 }
+
 
 export async function createCategory(
   _state: CategoryFormState,
