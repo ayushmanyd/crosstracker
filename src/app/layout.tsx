@@ -24,6 +24,8 @@ export const metadata: Metadata = {
     "Plan monthly spending targets, log actuals, and see the variance.",
 };
 
+import { Toaster } from "@/components/ui/toast";
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -36,7 +38,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         inter.variable,
       )}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }
