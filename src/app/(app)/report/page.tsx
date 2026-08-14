@@ -15,6 +15,7 @@ import { verifySession } from "@/server/dal";
 
 import { ReportFilters } from "./report-filters";
 import { ReportTable } from "./report-table";
+import { ReportChart } from "./report-chart";
 
 export const metadata: Metadata = { title: "Report" };
 
@@ -58,7 +59,10 @@ export default async function ReportPage(props: PageProps) {
           </EmptyHeader>
         </Empty>
       ) : (
-        <ReportTable report={report} />
+        <div className="flex flex-col gap-8">
+          <ReportTable report={report} />
+          <ReportChart monthlyTotals={report.monthlyTotals} />
+        </div>
       )}
     </div>
   );
