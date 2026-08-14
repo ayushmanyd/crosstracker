@@ -15,12 +15,10 @@ export function ToggleLockForm({
   locked: boolean;
 }) {
   const [state, formAction, pending] = useActionState(
-    async (prevState: any, formData: FormData) => {
-      const result = await toggleMonthLock(month, !locked);
-      return result;
-    },
+    async () => toggleMonthLock(month, !locked),
     undefined,
   );
+
 
   useEffect(() => {
     if (state?.message) {

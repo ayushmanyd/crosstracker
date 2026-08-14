@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,10 +12,12 @@ export function ReportFilters({ from, to }: { from: string; to: string }) {
   const [f, setF] = useState(from);
   const [t, setT] = useState(to);
 
-  useEffect(() => {
+  const [prev, setPrev] = useState({ from, to });
+  if (from !== prev.from || to !== prev.to) {
+    setPrev({ from, to });
     setF(from);
     setT(to);
-  }, [from, to]);
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

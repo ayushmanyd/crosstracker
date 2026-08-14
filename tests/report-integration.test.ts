@@ -2,7 +2,6 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 
 import { getReportData } from "@/server/reports/queries";
 import { verifySession } from "@/server/dal";
-import { db } from "@/server/db";
 
 vi.mock("@/server/dal", () => ({
   verifySession: vi.fn(),

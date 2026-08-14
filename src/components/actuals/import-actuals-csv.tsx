@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useRef, useState } from "react";
+
 import { Upload } from "lucide-react";
 import { useFormStatus } from "react-dom";
 
@@ -17,7 +18,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/toast";
-import { importActualsCsv } from "@/server/actuals/actions";
+import {
+  importActualsCsv,
+  type CsvImportState,
+} from "@/server/actuals/actions";
+
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 function SubmitButton() {
@@ -32,20 +37,24 @@ function SubmitButton() {
 export function ImportActualsCsv() {
   const [open, setOpen] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
-  const [state, formAction] = useActionState(importActualsCsv, undefined);
   const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    setIsDirty(false);
-    if (state?.success) {
-      setOpen(false);
-      toast.add({
-        title: "Import successful",
-        description: "Actuals imported successfully.",
-        type: "success",
-      });
-    }
-  }, [state]);
+  const [state, formAction] = useActionState(
+    async (previousState: CsvImportState, formData: FormData) => {
+      const result = await importActualsCsv(previousState, formData);
+      setIsDirty(false);
+      if (result?.success) {
+        setOpen(false);
+        toast.add({
+          title: "Import successful",
+          description: "Actuals imported successfully.",
+          type: "success",
+        });
+      }
+      return result;
+    },
+    undefined,
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

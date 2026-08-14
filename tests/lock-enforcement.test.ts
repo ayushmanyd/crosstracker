@@ -4,7 +4,6 @@ import { upsertPlan } from "@/server/plans/actions";
 import { createActual } from "@/server/actuals/actions";
 import { assertMonthUnlocked, LockedPeriodError } from "@/server/locks/guard";
 import { verifySession } from "@/server/dal";
-import { db } from "@/server/db";
 
 vi.mock("@/server/dal", () => ({
   verifySession: vi.fn(),

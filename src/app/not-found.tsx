@@ -20,7 +20,7 @@ export default function NotFound() {
           </EmptyMedia>
           <EmptyTitle>Page not found</EmptyTitle>
           <EmptyDescription>
-            The page you are looking for doesn't exist or has been moved.
+            The page you are looking for doesn&rsquo;t exist or has been moved.
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
