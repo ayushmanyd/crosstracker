@@ -13,6 +13,7 @@ import { getReportData } from "@/server/reports/queries";
 import { buildReport } from "@/lib/report";
 import { verifySession } from "@/server/dal";
 
+import { ExportReportButton } from "./export-report-button";
 import { ReportFilters } from "./report-filters";
 import { ReportTable } from "./report-table";
 import { ReportChart } from "./report-chart";
@@ -38,10 +39,13 @@ export default async function ReportPage(props: PageProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader
-        title="Report"
-        description="Plan vs actual with variance, by category and month."
-      />
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <PageHeader
+          title="Report"
+          description="Plan vs actual with variance, by category and month."
+        />
+        <ExportReportButton from={from} to={to} />
+      </div>
 
       <ReportFilters from={from} to={to} />
 

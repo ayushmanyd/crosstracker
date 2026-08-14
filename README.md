@@ -1,8 +1,8 @@
 # CrossTracker - Plan vs Actual Tracker
 
 A small web app for tracking monthly spending targets (**plans**) against logged
-spend (**actuals**) per category, with a variance report, month locking, and CSV
-import.
+spend (**actuals**) per category, with a variance report, month locking, CSV
+import, and CSV export.
 
 **Live URL:** https://crosstrackers.vercel.app
 
@@ -204,6 +204,27 @@ imported partially):
 A ready-to-use example file is at `public/sample-actuals.csv` (it matches the
 assignment's sample data).
 
+### CSV export
+
+The report can be downloaded as CSV via the **Export CSV** button on the Report
+page (or directly at `/report/export?from=YYYY-MM&to=YYYY-MM`). The export uses
+the currently selected range and mirrors the on-screen table:
+
+- One row per category × month (sorted by month, then category), plus a
+  grand-total row.
+- Amounts are plain decimal numbers (e.g. `5000.00`) - no currency symbols or
+  thousands separators - so the file is machine-readable.
+- Missing actuals leave **Actual / Variance / Variance %** empty (the CSV
+  equivalent of the `-` shown in the UI), while the totals row still counts
+  them as 0 - consistent with the report page.
+- Plan = 0 leaves **Variance %** empty (never `NaN`/`Infinity`).
+- Category names are escaped per RFC 4180 (commas/quotes/newlines are safe).
+
+The endpoint is a Route Handler (`src/app/(app)/report/export/route.ts`) that
+reuses the exact same query + aggregation pipeline as the report page, so the
+CSV can never disagree with what's on screen. It requires an authenticated
+session and returns `400` for malformed or reversed ranges.
+
 ### Authentication
 
 - Sign up / log in with email + password.
@@ -333,8 +354,8 @@ variance/report behavior can be unit-tested without a database or React.
    beneath the application-level `user_id` scoping.
 3. **Audit log** for plan/actual edits and lock toggles (who changed what,
    when) - important once money-adjacent data is involved.
-4. **Drill-down & export** (the assignment's stretch goals): click a report
-   cell to see underlying actual entries, and download the report as CSV.
+4. **Drill-down** (the assignment's remaining stretch goal): click a report
+   cell to see the underlying actual entries.
 5. **Fiscal year support** for the report range selector.
 6. **E2E tests** (Playwright) covering the critical flows: signup → seed →
    plan → actual → lock → report.
