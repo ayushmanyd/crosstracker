@@ -5,6 +5,7 @@ import { Lock, Target } from "lucide-react";
 import { currentMonth, formatMonthLabel, monthSchema } from "@/lib/months";
 import { MonthNavigator } from "@/components/plans/month-navigator";
 import { PlansGrid } from "@/components/plans/plans-grid";
+import { ToggleLockForm } from "@/components/plans/toggle-lock-form";
 import { PageHeader } from "@/components/page-header";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -22,9 +23,7 @@ import { getPlansForMonth } from "@/server/plans/queries";
 
 export const metadata: Metadata = { title: "Plans" };
 
-export default async function PlansPage({
-  searchParams,
-}: PageProps<"/plans">) {
+export default async function PlansPage({ searchParams }: PageProps<"/plans">) {
   const params = await searchParams;
   const parsed = monthSchema.safeParse(params.month);
   const month = parsed.success ? parsed.data : currentMonth();
@@ -42,7 +41,10 @@ export default async function PlansPage({
           title="Plans"
           description="Monthly spending targets per category."
         />
-        <MonthNavigator month={month} basePath="/plans" />
+        <div className="flex items-center gap-2 md:gap-4">
+          <MonthNavigator month={month} basePath="/plans" />
+          <ToggleLockForm month={month} locked={locked} />
+        </div>
       </div>
 
       {locked ? (

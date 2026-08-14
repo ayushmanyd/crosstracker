@@ -8,6 +8,7 @@ import { ActualActions } from "@/components/actuals/actual-actions";
 import { CreateActualForm } from "@/components/actuals/create-actual-form";
 import { PageHeader } from "@/components/page-header";
 import { MonthNavigator } from "@/components/plans/month-navigator";
+import { ToggleLockForm } from "@/components/plans/toggle-lock-form";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -48,7 +49,10 @@ export default async function ActualsPage({
           title="Actuals"
           description="What you actually spent, per category and month."
         />
-        <MonthNavigator month={month} basePath="/actuals" />
+        <div className="flex items-center gap-2 md:gap-4">
+          <MonthNavigator month={month} basePath="/actuals" />
+          <ToggleLockForm month={month} locked={locked} />
+        </div>
       </div>
 
       {locked ? (

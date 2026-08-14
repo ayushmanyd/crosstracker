@@ -23,6 +23,7 @@ export function MonthNavigator({
       <Button
         type="button"
         variant="outline"
+        className="size-9"
         size="icon-sm"
         onClick={() => go(addMonths(month, -1))}
         aria-label="Previous month"
@@ -42,9 +43,11 @@ export function MonthNavigator({
       <Button
         type="button"
         variant="outline"
+        className="size-9"
         size="icon-sm"
         onClick={() => go(addMonths(month, 1))}
         aria-label="Next month"
+        title="Next month"
       >
         <ChevronRight />
       </Button>
