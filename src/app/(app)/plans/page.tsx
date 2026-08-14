@@ -70,7 +70,7 @@ export default async function PlansPage({ searchParams }: PageProps<"/plans">) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Button render={<Link href="/categories" />}>
+            <Button render={<Link href="/categories" />} nativeButton={false}>
               Go to categories
             </Button>
           </EmptyContent>

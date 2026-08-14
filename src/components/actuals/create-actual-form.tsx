@@ -59,7 +59,7 @@ export function CreateActualForm({
 
   useEffect(() => {
     if (state?.success) {
-      toast.add({ title: "Successfully logged actual.", type: "success" });
+      toast.add({ title: "Successfully added actual.", type: "success" });
     } else if (state?.errors?.amount) {
       toast.add({ title: state.errors.amount[0], type: "error" });
       document.getElementById("actual-amount")?.focus();
@@ -67,7 +67,6 @@ export function CreateActualForm({
       toast.add({ title: state.message, type: "error" });
     }
   }, [state]);
-
 
   const handleCategoryChange = (value: string | null) => {
     setCategoryId(value ?? "");
@@ -186,7 +185,7 @@ export function CreateActualForm({
         <div>
           <Button type="submit" disabled={locked || pending}>
             <Plus data-icon="inline-start" />
-            {pending ? "Logging…" : "Log actual"}
+            {pending ? "Adding…" : "Add actual"}
           </Button>
         </div>
       </FieldGroup>

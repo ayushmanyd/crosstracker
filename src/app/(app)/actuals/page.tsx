@@ -84,7 +84,7 @@ export default async function ActualsPage({
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Button render={<Link href="/categories" />}>
+            <Button render={<Link href="/categories" />} nativeButton={false}>
               Go to categories
             </Button>
           </EmptyContent>
