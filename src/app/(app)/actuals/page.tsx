@@ -6,6 +6,7 @@ import { currentMonth, formatMonthLabel, monthSchema } from "@/lib/months";
 import { formatCents } from "@/lib/money";
 import { ActualActions } from "@/components/actuals/actual-actions";
 import { CreateActualForm } from "@/components/actuals/create-actual-form";
+import { ImportActualsCsv } from "@/components/actuals/import-actuals-csv";
 import { PageHeader } from "@/components/page-header";
 import { MonthNavigator } from "@/components/plans/month-navigator";
 import { ToggleLockForm } from "@/components/plans/toggle-lock-form";
@@ -44,14 +45,19 @@ export default async function ActualsPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <PageHeader
-          title="Actuals"
-          description="What you actually spent, per category and month."
-        />
-        <div className="flex items-center gap-2 md:gap-4">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <PageHeader
+            title="Actuals"
+            description="What you actually spent, per category and month."
+          />
+          <div className="flex items-center gap-2">
+            <ImportActualsCsv />
+            <ToggleLockForm month={month} locked={locked} />
+          </div>
+        </div>
+        <div className="w-full flex justify-end">
           <MonthNavigator month={month} basePath="/actuals" />
-          <ToggleLockForm month={month} locked={locked} />
         </div>
       </div>
 

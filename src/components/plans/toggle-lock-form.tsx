@@ -42,20 +42,16 @@ export function ToggleLockForm({
 
   return (
     <form action={formAction}>
-      <Button type="submit" className="h-9 gap-2" disabled={pending}>
+      <Button type="submit" className="h-9 w-full gap-2" disabled={pending}>
         {locked ? (
           <>
             <LockOpen className="size-4" />
-            <span>
-              <span className="hidden sm:inline">Unlock </span>Month
-            </span>
+            <span>Unlock Month</span>
           </>
         ) : (
           <>
             <Lock className="size-4" />
-            <span>
-              <span className="hidden sm:inline">Lock </span>Month
-            </span>
+            <span>Lock Month</span>
           </>
         )}
       </Button>

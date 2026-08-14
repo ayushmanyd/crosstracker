@@ -19,7 +19,7 @@ export function MonthNavigator({
     router.replace(`${basePath}?month=${target}`, { scroll: false });
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="w-full lg:w-fit flex items-center gap-2">
       <Button
         type="button"
         variant="outline"

@@ -10,6 +10,7 @@ import { verifySession } from "@/server/dal";
 import { db } from "@/server/db";
 import { actuals, categories } from "@/server/db/schema";
 import { assertMonthUnlocked, LockedPeriodError } from "@/server/locks/guard";
+import { getLockedMonths } from "@/server/locks/queries";
 
 export type ActualFormState =
   | {
@@ -189,6 +190,98 @@ export async function deleteActual(
       return { message: lockedMessage(existing.month, "actuals") };
     }
     throw error;
+  }
+
+  refresh();
+  return { success: true };
+}
+
+export type CsvImportState =
+  | { success?: boolean; message?: string; errors?: string[] }
+  | undefined;
+
+export async function importActualsCsv(
+  _state: CsvImportState,
+  formData: FormData,
+): Promise<CsvImportState> {
+  const { userId } = await verifySession();
+
+  const file = formData.get("file") as File | null;
+  if (!file) return { message: "No file selected." };
+
+  const text = await file.text();
+  const lines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
+
+  if (lines.length < 2) return { message: "File is empty or missing data." };
+
+  const header = lines[0].toLowerCase().split(",").map((s) => s.trim());
+  if (
+    header[0] !== "month" ||
+    header[1] !== "category" ||
+    header[2] !== "amount"
+  ) {
+    return { message: "Invalid CSV header. Expected: month,category,amount" };
+  }
+
+  const [userCategories, lockedMonths] = await Promise.all([
+    db
+      .select({ id: categories.id, name: categories.name })
+      .from(categories)
+      .where(eq(categories.userId, userId)),
+    getLockedMonths(),
+  ]);
+
+  const categoryMap = new Map(
+    userCategories.map((c) => [c.name.toLowerCase(), c.id]),
+  );
+
+  const toInsert: typeof actuals.$inferInsert[] = [];
+  const errors: string[] = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const row = lines[i].split(",").map((s) => s.trim());
+    if (row.length < 3) continue;
+
+    const [monthRaw, categoryRaw, amountRaw] = row;
+
+    const parsedMonth = monthSchema.safeParse(monthRaw);
+    if (!parsedMonth.success) {
+      errors.push(`Row ${i + 1}: Invalid month format "${monthRaw}". Expected YYYY-MM.`);
+      continue;
+    }
+    const month = parsedMonth.data;
+
+    if (lockedMonths.has(month)) {
+      errors.push(`Row ${i + 1}: ${formatMonthLabel(month, "long")} is locked.`);
+      continue;
+    }
+
+    const categoryId = categoryMap.get(categoryRaw.toLowerCase());
+    if (!categoryId) {
+      errors.push(`Row ${i + 1}: Unknown category "${categoryRaw}".`);
+      continue;
+    }
+
+    const amountCents = parseAmountToCents(amountRaw);
+    if (amountCents === null) {
+      errors.push(`Row ${i + 1}: Invalid amount "${amountRaw}".`);
+      continue;
+    }
+
+    toInsert.push({
+      userId,
+      month,
+      categoryId,
+      amountCents,
+    });
+  }
+
+  if (errors.length > 0) {
+    return { errors, message: "Validation failed. No actuals were imported." };
+  }
+
+  if (toInsert.length > 0) {
+    await db.insert(actuals).values(toInsert);
   }
 
   refresh();
