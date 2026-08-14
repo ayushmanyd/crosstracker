@@ -51,8 +51,13 @@ export function CreateActualForm({
     return result;
   }, undefined);
 
-  useEffect(() => {
+  const [lastSyncedState, setLastSyncedState] = useState(state);
+  if (state !== lastSyncedState) {
+    setLastSyncedState(state);
     setClientErrors(state?.errors);
+  }
+
+  useEffect(() => {
     if (state?.success) {
       toast.add({ title: "Successfully logged actual.", type: "success" });
     } else if (state?.errors?.amount) {
@@ -62,6 +67,7 @@ export function CreateActualForm({
       toast.add({ title: state.message, type: "error" });
     }
   }, [state]);
+
 
   const handleCategoryChange = (value: string | null) => {
     setCategoryId(value ?? "");

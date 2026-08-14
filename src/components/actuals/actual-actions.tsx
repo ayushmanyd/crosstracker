@@ -127,8 +127,13 @@ function EditForm({
   const [clientErrors, setClientErrors] =
     useState<NonNullable<ActualFormState>["errors"]>(undefined);
 
-  useEffect(() => {
+  const [lastSyncedState, setLastSyncedState] = useState(state);
+  if (state !== lastSyncedState) {
+    setLastSyncedState(state);
     setClientErrors(state?.errors);
+  }
+
+  useEffect(() => {
     if (state?.success) {
       toast.add({ title: "Successfully updated actual.", type: "success" });
       onDone();
