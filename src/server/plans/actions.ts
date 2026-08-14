@@ -38,7 +38,7 @@ export async function upsertPlan(
   const amountCents =
     typeof rawAmount === "string" ? parseAmountToCents(rawAmount) : null;
   if (amountCents === null) {
-    return { message: "Enter a valid amount (e.g. 5000 or 4,800.50)." };
+    return { message: "Enter a valid amount (e.g. 100 or 5,000.50)." };
   }
 
   try {
@@ -58,7 +58,7 @@ export async function upsertPlan(
   } catch (error) {
     if (error instanceof LockedPeriodError) {
       return {
-        message: `${formatMonthLabel(parsedMonth.data, "long")} is locked — plans for locked months can't be edited.`,
+        message: `${formatMonthLabel(parsedMonth.data, "long")} is locked - plans for locked months can't be edited.`,
       };
     }
     throw error;

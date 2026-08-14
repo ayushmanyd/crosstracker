@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toast";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -23,8 +24,6 @@ export const metadata: Metadata = {
   description:
     "Plan monthly spending targets, log actuals, and see the variance.",
 };
-
-import { Toaster } from "@/components/ui/toast";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

@@ -16,7 +16,7 @@ export function computeVariance(
 }
 
 export function formatVariancePct(pct: number | null): string {
-  if (pct === null) return "—";
+  if (pct === null) return "-";
   const fixed = pct.toFixed(2);
   return pct > 0 ? `+${fixed}%` : `${fixed}%`;
 }

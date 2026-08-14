@@ -29,7 +29,7 @@ describe("computeVariance (assignment sample data)", () => {
 });
 
 describe("computeVariance edge cases", () => {
-  it("plan = 0, actual = 0 -> variance 0, pct null (renders —)", () => {
+  it("plan = 0, actual = 0 -> variance 0, pct null (renders -)", () => {
     const r = computeVariance(0, 0);
     expect(r.varianceCents).toBe(0);
     expect(r.variancePct).toBeNull();
@@ -57,6 +57,6 @@ describe("formatVariancePct", () => {
   });
 
   it("renders null as an em dash", () => {
-    expect(formatVariancePct(null)).toBe("—");
+    expect(formatVariancePct(null)).toBe("-");
   });
 });

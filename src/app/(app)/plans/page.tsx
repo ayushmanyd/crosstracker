@@ -50,7 +50,7 @@ export default async function PlansPage({
           <Lock className="size-4" />
           <AlertDescription className="flex items-center gap-2">
             <Badge variant="secondary">Locked</Badge>
-            {formatMonthLabel(month, "long")} is locked — plans for this month
+            {formatMonthLabel(month, "long")} is locked - plans for this month
             are read-only.
           </AlertDescription>
         </Alert>
